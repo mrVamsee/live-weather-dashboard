@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.card {
+  width: 100%;
+  max-width: 750px;
+  margin: 30px auto;
+  padding: 35px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  border-left: 6px solid #2563eb;
+  text-align: center;
+}
+
+/* ICON */
+.card img {
+  width: 80px;
+  height: 80px;
+}
+
+/* BIG TEMP */
+.temp {
+  font-size: 42px;
+  font-weight: bold;
+  color: #1d4ed8;
+  margin: 10px 0;
+}
+
+/* CONDITION */
+.condition {
+  font-size: 18px;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.stat-box {
+  background: #f1f5f9;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* AQI BADGE */
+.aqi-badge {
+  margin-top: 15px;
+  display: inline-block;
+  padding: 8px 14px;
+  background: #2563eb;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+}

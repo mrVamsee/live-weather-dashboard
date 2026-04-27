@@ -1,0 +1,247 @@
+/* 1. GLOBAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Vital for stacking */
+  align-items: center;
+  justify-content: center; /* Centers the whole group on screen */
+  background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  padding: 40px 20px;
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;           /* INCREASED: More space between icon and text */
+  margin-bottom: 40px; /* INCREASED: Larger gap before the card starts */
+  width: 100%;
+  max-width: 450px;    /* INCREASED: Allows the header to spread out more */
+  justify-content: center;
+}
+
+.title-section h1 {
+  font-size: 30px;
+  color: #1e3a8a !important; /* Deep Royal Blue */
+  font-weight: 900;
+  margin: 0;
+}
+.title-section p {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 5px;
+  
+  /* CHANGE THIS COLOR TO MATCH */
+  color: #1e40af !important; /* Vibrant Blue */
+  opacity: 1; /* Ensure it is not faded out */
+}
+.logo {
+  font-size: 55px;     /* INCREASED: Much larger weather icon */
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4)); /* Added a soft glow */
+}
+.main {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.15); 
+  padding: 30px;
+  border-radius: 28px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  width: 100%;
+  height: auto; /* Ensures inner card also grows */
+  background: transparent;
+}
+/* 4. TYPOGRAPHY (CITY, CONDITION, TEMP) */
+.weather-city-text {
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important; 
+  margin-bottom: 5px;
+}
+
+.weather-condition-text {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: rgb(255, 255, 255) !important; 
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+
+.weather-condition-pill {
+  /* Colors & Glass Effect */
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #1e40af;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  
+  /* Spacing (Padding: Top, Right, Bottom, Left) */
+  padding: 12px 28px 10px 28px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  
+  /* Shape & Layout */
+  border-radius: 50px;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  
+  /* Typography */
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  
+  /* Shadow for Depth */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  
+  /* Smoothness */
+  transition: all 0.3s ease;
+}
+
+/* Ensure the parent centers the inline-block pill */
+.card-header {
+  text-align: center;
+}
+
+.weather-temp-pill {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  background: rgba(255, 255, 255, 0.6) !important; 
+  padding: 10px 28px;
+  border-radius: 50px;
+  display: inline-block;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 5. STAT BOXES - FIXED TO GLASS STYLE */
+.stats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-box {
+  /* FIXED: Changed from solid white to transparent glass */
+  background: rgba(255, 255, 255, 0.2) !important; 
+  padding: 18px;
+  border-radius: 20px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px; /* THE GAP */
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.stat-box:last-child {
+  margin-bottom: 0;
+}
+
+.stat-content {
+  /* White text looks better on glass boxes */
+  color: #7501f2da !important; 
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 6. HEADER & SEARCH UI */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: rgba(43, 75, 136, 0.9);
+  border-radius: 16px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.header h1 {
+  font-size: 18px;
+  color: white;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;      /* Increased gap between input and button */
+  margin-bottom: 30px;
+  width: 100%;    /* Ensures it uses the full width of your growing card */
+  padding: 0 10px; /* Slight side padding so it doesn't touch the glass edges */
+}
+
+input {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  outline: none;
+}
+
+
+.search-btn {
+  /* Size & Shape */
+  padding: 10px 24px;
+  font-size: 14px;
+  border-radius: 12px;
+  width: fit-content;
+  
+  /* Centering the button within a flex column container */
+  align-self: center;
+
+  /* Colors & Typography */
+  background-color: #ff7e67;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  
+  /* Border & Shadow */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 126, 103, 0.3);
+  
+  /* Animation */
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #ff6b52;
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 6px 15px rgba(255, 126, 103, 0.4);
+}
+
+.search-btn:active {
+  transform: translateY(0); /* Returns to normal on click */
+  background-color: #e05640;
+}
+
+weather-city-text {
+  color: #1e3a8a !important; /* Deep Royal Blue */
+  font-weight: 900 !important;
+  font-size: 36px;
+  text-align: center;
+  margin: 10px 0;
+  display: block; /* Ensures it respects margins */
+}
+
