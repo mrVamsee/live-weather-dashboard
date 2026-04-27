@@ -1,9 +1,8 @@
 import React from 'react';
 
 const SearchBar = ({ city, setCity, onSearch }) => {
-  // Handles the Enter key press
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && city.trim() !== "") {
+    if (e.key === "Enter") {
       onSearch();
     }
   };
@@ -14,14 +13,14 @@ const SearchBar = ({ city, setCity, onSearch }) => {
         type="text"
         className="city-input"
         value={city}
+        
         onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city"
+        placeholder="Enter city name"
+        
         onKeyDown={handleKeyDown}
       />
-      <button 
-        className="search-btn"
-        onClick={() => city.trim() !== "" && onSearch()}
-      >
+
+      <button className="search-btn" onClick={onSearch}>
         Search
       </button>
     </div>

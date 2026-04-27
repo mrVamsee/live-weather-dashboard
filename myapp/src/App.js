@@ -20,14 +20,13 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  //  API key 
-  const API_KEY = "90b5c82a514d4b08ad2120836262604"; 
+  const API_KEY = "90b5c82a514d4b08ad2120836262604";
 
   const fetchWeather = async (cityName) => {
     try {
       setLoading(true);
       setError('');
-      
+
       const res = await fetch(
         `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=yes`
       );
@@ -36,11 +35,10 @@ const App = () => {
 
       if (data.error) {
         setError("City not found");
-        setTcity(''); // Reset UI on error
+        setTcity('');
         return;
       }
 
-      // Destructuring values from API response
       const {
         location: { name },
         current: {
@@ -53,7 +51,6 @@ const App = () => {
         }
       } = data;
 
-      // Updating State Variables
       setTcity(name);
       setTemperature(temp_c);
       setFeelsLike(feelslike_c);
@@ -61,8 +58,6 @@ const App = () => {
       setHumidity(humidity);
       setCondition(text);
       setAQI(air_quality["us-epa-index"]);
-      
-      // Ensure the icon URL has the proper protocol
       setIcon(`https:${icon}`);
 
     } catch (err) {
@@ -73,58 +68,71 @@ const App = () => {
     }
   };
 
-  const checkWeather = () => {
-    if (!city.trim()) {
+  // ✅ FIXED SEARCH HANDLER
+  const handleSearch = () => {
+    if (!city || city.trim() === "") {
       setError("Please enter a city name");
       return;
     }
+
+    setError("");
     fetchWeather(city.trim());
-    setCity(''); // Clear the input field after searching
+    setCity('');
+  };
+
+  // ✅ CLEAR CITY ON TYPING
+  const handleCityChange = (value) => {
+    setCity(value);
+    if (error) setError('');
   };
 
   return (
     <div className="screen">
-  {/* SEPARATED HEADER */}
-  <div className="top-header">
-    <div className="logo">🌦️</div>
-    <div className="title-section">
-      <h1>Live Weather Data</h1>
-      <p >Real-time Weather Intelligence</p>
+
+      {/* HEADER */}
+      <div className="top-header">
+        <div className="logo">🌦️</div>
+        <div className="title-section">
+          <h1>Live Weather Dashboard</h1>
+          <p>Real-time Weather Intelligence</p>
+        </div>
+      </div>
+
+      {/* MAIN */}
+      <div className="main">
+
+        <SearchBar
+          city={city}
+          setCity={handleCityChange}
+          onSearch={handleSearch}
+        />
+
+        {/* ERROR MESSAGE */}
+        {error && <ErrorMessage message={error} />}
+
+        {loading && <Loader />}
+
+        {!tcity && !loading && !error && (
+          <p style={{ marginTop: "20px", textAlign: "center", color: "#0b49e6", fontSize: "20px" }}>
+            🔍 Enter a city to check weather
+          </p>
+        )}
+
+        {tcity && !loading && !error && (
+          <WeatherCard
+            city={tcity}
+            icon={icon}
+            temperature={temperature}
+            feelsLike={feelsLike}
+            condition={condition}
+            wind={wind}
+            humidity={humidity}
+            aqi={aqi}
+          />
+        )}
+
+      </div>
     </div>
-  </div>
-
-  {/* MAIN DASHBOARD CONTAINER */}
-  <div className="main">
-    <SearchBar
-      city={city}
-      setCity={setCity}
-      onSearch={checkWeather}
-    />
-
-    {loading && <Loader />}
-    
-    {error && <ErrorMessage message={error} />}
-
-    {!tcity && !loading && !error && (
-      <p style={{ marginTop: "20px", textAlign: "center", color: "#0b49e6",fontSize:"20px" }}>
-        🔍 Enter a city to check weather
-      </p>
-    )}
-
-    {tcity && !loading && !error && (
-      <WeatherCard
-        city={tcity}
-        icon={icon}
-        temperature={temperature}
-        feelsLike={feelsLike}
-        condition={condition}
-        wind={wind}
-        humidity={humidity}
-        aqi={aqi}
-      />
-    )}
-  </div>
-</div>
   );
 };
 
