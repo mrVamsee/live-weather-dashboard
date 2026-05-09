@@ -455,6 +455,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 16px;
 }
 
 .stat-row {
@@ -483,6 +484,79 @@
   font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+/* AQI Section */
+.aqi-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aqi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.aqi-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.aqi-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.aqi-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.aqi-badge:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(2px);
+}
+
+.aqi-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.aqi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.aqi-level {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.aqi-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 /* ============================================================

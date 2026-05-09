@@ -64,6 +64,19 @@ function getNext6Hours(forecastday, localtime) {
   return future.slice(0, 6);
 }
 
+/* Get AQI description and color based on US EPA index */
+function getAQIInfo(index) {
+  const levels = {
+    1: { text: 'Good', color: '#10b981', desc: 'Air quality is satisfactory' },
+    2: { text: 'Moderate', color: '#fbbf24', desc: 'Acceptable for most people' },
+    3: { text: 'Unhealthy for Sensitive Groups', color: '#f97316', desc: 'Sensitive groups may experience effects' },
+    4: { text: 'Unhealthy', color: '#ef4444', desc: 'Everyone may begin to experience effects' },
+    5: { text: 'Very Unhealthy', color: '#a855f7', desc: 'Health alert: everyone may experience serious effects' },
+    6: { text: 'Hazardous', color: '#7e22ce', desc: 'Health warning of emergency conditions' },
+  };
+  return levels[index] || { text: 'Unknown', color: '#6b7280', desc: 'No data available' };
+}
+
 /* ---------- skeleton pieces ---------- */
 function SkeletonBlock({ w, h, radius }) {
   return (
@@ -137,7 +150,7 @@ export default function App() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/forecast.json?key=${API_KEY}&q=${encodeURIComponent(trimmed)}&days=5&aqi=no&alerts=no`
+        `${API_BASE}/forecast.json?key=${API_KEY}&q=${encodeURIComponent(trimmed)}&days=5&aqi=yes&alerts=no`
       );
       const data = await res.json();
 
@@ -280,6 +293,8 @@ export default function App() {
   const cur      = weatherData?.current;
   const forecast = weatherData?.forecast?.forecastday || [];
   const hours    = weatherData ? getNext6Hours(forecast, loc.localtime) : [];
+  const aqi      = cur?.air_quality?.['us-epa-index'];
+  const aqiInfo  = aqi ? getAQIInfo(aqi) : null;
 
   return (
     <div className="app">
@@ -425,6 +440,29 @@ export default function App() {
                   <span className="stat-value">{cur.humidity}%</span>
                 </div>
               </div>
+
+              {/* AQI Badge */}
+              {aqiInfo && (
+                <div className="aqi-section">
+                  <div className="aqi-header">
+                    <span className="aqi-title">Air Quality Index</span>
+                    <span className="aqi-value">{aqi}</span>
+                  </div>
+                  <div 
+                    className="aqi-badge"
+                    style={{ borderLeftColor: aqiInfo.color }}
+                  >
+                    <div 
+                      className="aqi-dot"
+                      style={{ backgroundColor: aqiInfo.color }}
+                    />
+                    <div className="aqi-content">
+                      <span className="aqi-level">{aqiInfo.text}</span>
+                      <span className="aqi-desc">{aqiInfo.desc}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Hourly strip */}
