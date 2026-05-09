@@ -1,0 +1,211 @@
+/* ── Entrance animation ─────────────────────────────────────────────────── */
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Temp fade on unit change ───────────────────────────────────────────── */
+@keyframes tempFade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.card {
+    width: 100%;
+    background: transparent;
+}
+
+.card-enter {
+    animation: cardEnter 0.4s ease-out both;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.card-header {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.weather-city-text {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--color-primary);
+}
+
+.weather-country {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-primary-muted);
+}
+
+/* ── Share button ───────────────────────────────────────────────────────── */
+.share-btn {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid var(--color-border-glass);
+    border-radius: 50px;
+    padding: 4px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--color-primary);
+    backdrop-filter: blur(6px);
+    transition: background 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.share-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.08);
+}
+
+.share-copied {
+    font-size: 11px;
+    font-weight: 700;
+    color: #16a34a;
+    white-space: nowrap;
+}
+
+/* ── Condition pill ─────────────────────────────────────────────────────── */
+.weather-condition-pill {
+    background-color: rgba(223, 223, 231, 0.75);
+    color: var(--color-primary);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 24px;
+    margin: 8px auto 18px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Icon + temp ────────────────────────────────────────────────────────── */
+.weather-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 4px 0 8px;
+}
+
+.weather-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.weather-temp-pill {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 10px 28px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.temp-animated {
+    animation: tempFade 0.2s ease-out both;
+}
+
+/* ── Stat boxes ─────────────────────────────────────────────────────────── */
+.stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px 16px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    cursor: default;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-box:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.stat-content {
+    color: var(--color-stat);
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ── AQI badge — fixed contrast ─────────────────────────────────────────── */
+.aqi-badge {
+    margin-top: 8px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* border-left set inline via aqiInfo.color */
+}
+
+.aqi-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.aqi-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.aqi-label {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a1a2e;
+    display: block;
+}
+
+.aqi-text {
+    font-weight: 600;
+    font-size: 12px;
+    color: #1a1a2e;
+    margin: 0;
+}

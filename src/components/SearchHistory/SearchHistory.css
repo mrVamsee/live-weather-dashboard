@@ -1,0 +1,63 @@
+.history-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.history-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-primary-muted);
+    white-space: nowrap;
+}
+
+.history-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.history-chip {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s ease;
+}
+
+.history-chip:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+.chip-name {
+    background: none;
+    border: none;
+    padding: 6px 10px 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.chip-remove {
+    background: none;
+    border: none;
+    padding: 6px 10px 6px 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary-muted);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.chip-remove:hover {
+    color: #e05640;
+}

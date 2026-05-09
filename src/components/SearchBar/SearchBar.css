@@ -1,0 +1,140 @@
+.search-wrapper {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.search-container {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    align-items: center;
+}
+
+/* ── Input ──────────────────────────────────────────────────────────────── */
+.city-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    color: var(--color-primary);
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.city-input::placeholder {
+    color: rgba(18, 14, 211, 0.45);
+    font-weight: 400;
+}
+
+.city-input:focus {
+    border: 1px solid rgba(52, 152, 219, 0.8);
+    box-shadow: 0 0 12px rgba(12, 121, 194, 0.4);
+    transform: scale(1.01);
+}
+
+/* ── Search button ──────────────────────────────────────────────────────── */
+.search-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 12px;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 126, 103, 0.35);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    background-color: #ff6b52;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 126, 103, 0.45);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+    background-color: #e05640;
+}
+
+/* ── Geo button + tooltip wrapper ───────────────────────────────────────── */
+.geo-btn-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.geo-btn {
+    padding: 12px 14px;
+    font-size: 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    min-height: 46px;
+}
+
+.geo-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+.geo-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Tooltip */
+.geo-tooltip {
+    position: absolute;
+    bottom: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 15, 30, 0.85);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.geo-btn-wrapper:hover .geo-tooltip {
+    opacity: 1;
+}
+
+/* Spinner inside geo button */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.geo-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
