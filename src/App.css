@@ -1,141 +1,533 @@
-/* ─── Light mode (default) CSS variables ────────────────────────────────── */
+/* ============================================================
+   CSS VARIABLES
+   ============================================================ */
 :root {
-  --color-primary: #1010e7;
-  --color-primary-muted: #1e40af;
-  --color-accent: #ff7e67;
-  --color-accent-hover: #ff6b52;
-  --color-stat: #7501f2;
-  --color-bg-screen: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --color-bg-glass: rgba(255, 255, 255, 0.15);
-  --color-border-glass: rgba(255, 255, 255, 0.3);
-  --color-text-heading: #1a1a2e;
-  --radius-card: 28px;
-  --shadow-card: 0 25px 50px rgba(0, 0, 0, 0.1);
+  --bg: linear-gradient(135deg, #0a0f1e 0%, #0d2137 100%);
+  --glass-bg: rgba(10, 20, 50, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(16px);
+  --text-primary: #e2e8f0;
+  --text-muted: #60a5fa;
+  --accent: #93c5fd;
+  --error: #f87171;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-pill: 50px;
+  --transition: 0.2s ease;
 }
 
-/* ─── Dark mode overrides ────────────────────────────────────────────────── */
-body.dark {
-  --color-primary: #93c5fd;
-  --color-primary-muted: #60a5fa;
-  --color-stat: #c084fc;
-  --color-bg-screen: linear-gradient(135deg, #0a0f1e 0%, #0d2137 100%);
-  --color-bg-glass: rgba(10, 20, 50, 0.6);
-  --color-border-glass: rgba(255, 255, 255, 0.12);
-  --color-text-heading: #e2e8f0;
-  --shadow-card: 0 25px 50px rgba(0, 0, 0, 0.4);
-}
-
-/* ─── Global reset ───────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  transition: background 0.3s ease;
-}
-
-/* ─── Screen ─────────────────────────────────────────────────────────────── */
-.screen {
+/* ============================================================
+   BASE
+   ============================================================ */
+.app {
   min-height: 100vh;
+  background: var(--bg);
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 64px;
+  color: var(--text-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background: var(--color-bg-screen);
-  padding: 36px 20px 60px;
-  transition: background 0.4s ease;
+  gap: 16px;
 }
 
-/* ─── Header ─────────────────────────────────────────────────────────────── */
-.top-header {
+/* ============================================================
+   APP TITLE
+   ============================================================ */
+.app-title {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 28px;
-  width: 100%;
-  max-width: 560px;
-  justify-content: center;
-  position: relative;
+  margin-bottom: 4px;
 }
 
-.logo {
-  font-size: 48px;
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
-  flex-shrink: 0;
+.app-icon {
+  font-size: 44px;
+  filter: drop-shadow(0 0 12px rgba(147, 197, 253, 0.5));
 }
 
-.title-section {
-  flex: 1;
-}
-
-.title-section h1 {
-  font-size: 24px;
-  color: var(--color-primary);
+.app-title h1 {
+  font-size: 26px;
   font-weight: 900;
-  white-space: nowrap;
-  transition: color 0.3s ease;
+  color: var(--accent);
+  line-height: 1.1;
 }
 
-.title-section p {
-  font-size: 10px;
+.app-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* ============================================================
+   GLASS CARD BASE
+   ============================================================ */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+/* ============================================================
+   SEARCH FORM
+   ============================================================ */
+.search-form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-sm);
+  padding: 13px 18px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-input::placeholder {
+  color: rgba(147, 197, 253, 0.45);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.15);
+}
+
+.search-btn {
+  flex-shrink: 0;
+  padding: 13px 24px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 3px;
-  color: var(--color-primary-muted);
-  transition: color 0.3s ease;
-}
-
-/* ─── Header controls (unit toggle + theme toggle) ───────────────────────── */
-.header-controls {
+  letter-spacing: 1px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  justify-content: center;
+  min-width: 90px;
 }
 
-.unit-toggle {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid var(--color-border-glass);
-  border-radius: 50px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--color-primary);
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s ease, transform 0.2s ease, color 0.3s ease;
+.search-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
 }
 
-.unit-toggle:hover {
-  background: rgba(255, 255, 255, 0.35);
-  transform: scale(1.05);
+.search-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-/* ─── Main panel ─────────────────────────────────────────────────────────── */
-.main {
-  width: 100%;
-  max-width: 560px;
-  background: var(--color-bg-glass);
-  padding: 24px 24px;
-  border-radius: var(--radius-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border-glass);
-  box-shadow: var(--shadow-card);
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+.search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* ─── Empty state ────────────────────────────────────────────────────────── */
-.empty-state {
-  margin-top: 20px;
-  text-align: center;
-  color: var(--color-primary);
-  font-size: 17px;
+/* Button spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+.error-msg {
+  color: var(--error);
+  font-size: 14px;
   font-weight: 600;
-  transition: color 0.3s ease;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+}
+
+/* ============================================================
+   RECENT CITIES
+   ============================================================ */
+.recent-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recent-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  background: rgba(147, 197, 253, 0.1);
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.chip:hover {
+  background: rgba(147, 197, 253, 0.18);
+  border-color: rgba(147, 197, 253, 0.45);
+}
+
+.chip-name {
+  padding: 6px 10px 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  user-select: none;
+}
+
+.chip-remove {
+  background: none;
+  border: none;
+  padding: 6px 12px 6px 4px;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition);
+  font-family: inherit;
+}
+
+.chip-remove:hover {
+  color: var(--error);
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.6;
+}
+
+/* ============================================================
+   FADE IN
+   ============================================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease-out both;
+}
+
+.weather-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================
+   CURRENT WEATHER CARD
+   ============================================================ */
+.current-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.current-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.city-name {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.country-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.condition-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.condition-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.temp-display {
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.temp-unit {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text-muted);
+  vertical-align: super;
+  letter-spacing: 0;
+}
+
+/* Stat rows */
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.stat-row:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: scale(1.01);
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   HOURLY + FORECAST STRIPS
+   ============================================================ */
+.strip-section {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.strip-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.strip-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.strip-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* On wider screens, forecast wraps instead of scrolls */
+.forecast-grid {
+  flex-wrap: wrap;
+  overflow-x: visible;
+  justify-content: space-between;
+}
+
+.strip-card {
+  flex: 1 1 0;
+  min-width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 12px 8px;
+  cursor: default;
+  transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+}
+
+.strip-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.strip-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.strip-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.strip-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.strip-low {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   SKELETON LOADER
+   ============================================================ */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.05) 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.skeleton-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 400px) {
+  .temp-display {
+    font-size: 64px;
+  }
+
+  .city-name {
+    font-size: 22px;
+  }
+
+  .condition-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .search-btn {
+    padding: 13px 16px;
+    min-width: 76px;
+    font-size: 13px;
+  }
 }
