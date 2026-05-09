@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -99,6 +99,14 @@ export default function App() {
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState(null);
   const [recent, setRecent]         = useState(loadRecent);
+  const [geoLoading, setGeoLoading] = useState(false);
+  
+  /* Autocomplete state */
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeSuggestion, setActiveSuggestion] = useState(-1);
+  const suggestTimeoutRef = useRef(null);
+  const inputRef = useRef(null);
 
   /* Auto-load from URL ?city= on mount */
   useEffect(() => {
@@ -108,12 +116,24 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* Close suggestions when clicking outside */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const fetchWeather = useCallback(async (cityName) => {
     const trimmed = (cityName || '').trim();
     if (!trimmed) return;
 
     setLoading(true);
     setError(null);
+    setShowSuggestions(false);
 
     try {
       const res = await fetch(
@@ -139,10 +159,111 @@ export default function App() {
     }
   }, []);
 
+  /* Fetch city suggestions from WeatherAPI search endpoint */
+  const fetchSuggestions = useCallback(async (searchText) => {
+    if (!searchText || searchText.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${API_BASE}/search.json?key=${API_KEY}&q=${encodeURIComponent(searchText)}`
+      );
+      const data = await res.json();
+      
+      if (Array.isArray(data) && data.length > 0) {
+        setSuggestions(data.slice(0, 8)); // limit to 8 suggestions
+        setShowSuggestions(true);
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    } catch {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, []);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    setActiveSuggestion(-1);
+
+    /* Debounce the API call */
+    if (suggestTimeoutRef.current) {
+      clearTimeout(suggestTimeoutRef.current);
+    }
+
+    suggestTimeoutRef.current = setTimeout(() => {
+      fetchSuggestions(value);
+    }, 300);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    const cityName = `${suggestion.name}, ${suggestion.country}`;
+    setQuery('');
+    setSuggestions([]);
+    setShowSuggestions(false);
+    fetchWeather(cityName);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!showSuggestions || suggestions.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveSuggestion(prev => 
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveSuggestion(prev => prev > 0 ? prev - 1 : -1);
+    } else if (e.key === 'Enter' && activeSuggestion >= 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[activeSuggestion]);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchWeather(query);
-    setQuery('');
+    if (activeSuggestion >= 0 && suggestions[activeSuggestion]) {
+      handleSuggestionClick(suggestions[activeSuggestion]);
+    } else {
+      fetchWeather(query);
+      setQuery('');
+    }
+  };
+
+  /* Geolocation handler */
+  const handleGeolocate = () => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    setGeoLoading(true);
+    setError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeather(`${latitude},${longitude}`);
+        setGeoLoading(false);
+      },
+      (err) => {
+        setGeoLoading(false);
+        if (err.code === 1) {
+          setError('Location access denied. Please enable location permissions.');
+        } else {
+          setError('Unable to retrieve your location. Please try searching manually.');
+        }
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
   };
 
   const removeRecent = (city, e) => {
@@ -173,21 +294,57 @@ export default function App() {
           </div>
         </div>
 
-        {/* ── Search bar ────────────────────────────────────────── */}
-        <form className="search-form" onSubmit={handleSubmit}>
-          <input
-            className="search-input"
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Enter city name..."
-            autoComplete="off"
-            spellCheck="false"
-          />
-          <button className="search-btn" type="submit" disabled={loading}>
-            {loading ? <span className="btn-spinner" /> : 'Search'}
-          </button>
-        </form>
+        {/* ── Search bar with geolocation ───────────────────────── */}
+        <div className="search-wrapper" ref={inputRef}>
+          <form className="search-form" onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <input
+                className="search-input"
+                type="text"
+                value={query}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Enter city name..."
+                autoComplete="off"
+                spellCheck="false"
+              />
+              
+              {/* Autocomplete dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="suggestions-dropdown">
+                  {suggestions.map((suggestion, idx) => (
+                    <div
+                      key={suggestion.id}
+                      className={`suggestion-item ${idx === activeSuggestion ? 'active' : ''}`}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      onMouseEnter={() => setActiveSuggestion(idx)}
+                    >
+                      <span className="suggestion-name">{suggestion.name}</span>
+                      <span className="suggestion-region">
+                        {suggestion.region && `${suggestion.region}, `}{suggestion.country}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button
+              className="geo-btn"
+              type="button"
+              onClick={handleGeolocate}
+              disabled={geoLoading || loading}
+              title="Use my location"
+              aria-label="Use my location"
+            >
+              {geoLoading ? <span className="btn-spinner" /> : '📍'}
+            </button>
+
+            <button className="search-btn" type="submit" disabled={loading}>
+              {loading ? <span className="btn-spinner" /> : 'Search'}
+            </button>
+          </form>
+        </div>
 
         {/* ── Error ─────────────────────────────────────────────── */}
         {error && <p className="error-msg">⚠ {error}</p>}
@@ -227,7 +384,7 @@ export default function App() {
         {!loading && !weatherData && !error && (
           <div className="empty-state">
             <span className="empty-icon">🔍</span>
-            <p>Search for a city to see the weather</p>
+            <p>Search for a city or use your location</p>
           </div>
         )}
 
